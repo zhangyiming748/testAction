@@ -16,4 +16,13 @@ jobs:
           go get -u
           go mod tidy
       - name: Build
-        run: go build -v main.go
+        run: |
+          CGO_ENABLED=1 GOOS=windows GOARCH=386 go build -o forWin32.exe main.go
+          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -o forWin64.exe main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm go build -o forRaspi32 main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o forRaspi64 main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=386 go build -o forLinux32 main.go
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o forLinux64 main.go
+          CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o forMac main.go
+          CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -o forM1 main.go
+          CGO_ENABLED=0 GOOS=android GOARCH=arm64 go build -o forAndroid main.go
